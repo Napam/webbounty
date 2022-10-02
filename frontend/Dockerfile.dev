@@ -1,0 +1,9 @@
+FROM node:16-bullseye
+
+WORKDIR /app
+
+ARG user
+ARG uid
+ARG gid
+RUN userdel -r node && groupadd -g $gid $user && \ 
+    useradd --shell /bin/bash -u $uid -g $gid $user
