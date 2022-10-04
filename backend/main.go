@@ -1,15 +1,43 @@
 package main
 
 import (
+	"encoding/base64"
+	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
+	"os"
 	"strings"
 
 	"github.com/gin-gonic/gin"
 )
 
+/**
+ * Returns code, harvestID
+ */
+func parseBasicAuthHeader(s string) (string, string, error) {
+	if !strings.HasPrefix(s, "Basic ") {
+		return "", "", errors.New("Auth header missing 'Basic' prefix")
+	}
+
+	authAsBytes, err := base64.URLEncoding.WithPadding(base64.NoPadding).DecodeString(strings.Split(s, "Basic ")[1])
+	if err != nil {
+		return "", "", errors.New("Could not decode auth header, got error: " + err.Error())
+	}
+
+	authString := string(authAsBytes)
+	splitted := strings.Split(authString, ":")
+	if len(splitted) != 2 {
+		return "", "", errors.New("Invalid auth header")
+	}
+
+	return splitted[0], splitted[1], nil
+}
+
 func main() {
+	CLIENT_ID := os.Getenv("CLIENT_ID")
+	CLIENT_SECRET := os.Getenv("CLIENT_SECRET")
+
 	router := gin.Default()
 
 	router.GET("/", func(c *gin.Context) {
@@ -23,23 +51,18 @@ func main() {
 	})
 
 	router.GET("/oauth2client", func(c *gin.Context) {
-		c.String(200, "Success!")
+		code, user, err := parseBasicAuthHeader(c.GetHeader("Authorization"))
+		if err != nil {
+			fmt.Println(err)
+			c.AbortWithStatus(401)
+			return
+		}
+		fmt.Println("LOG:\x1b[33mDEBUG\x1b[0m", "user", user)
 
-		code, _ := func() (string, string) {
-			authString := strings.Split(c.GetHeader("Authorization"), ":")
-			if len(authString) != 2 {
-
-			}
-			return authString[0], authString[1]
-		}()
-
-		// if (code )
-
-		fmt.Println(c.GetHeader("Authorization"))
 		data := url.Values{
 			"code":          {code},
-			"client_id":     {""},
-			"client_secret": {""},
+			"client_id":     {CLIENT_ID},
+			"client_secret": {CLIENT_SECRET},
 			"grant_type":    {"authorization_code"},
 		}
 

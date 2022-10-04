@@ -1,11 +1,10 @@
-import { useState } from 'react'
 import './App.css'
+import axios from 'axios'
 import constants from './constants'
-const { harvestAuthUrl } = constants 
+const { harvestAuthUrl } = constants
+axios.defaults.baseURL = window.location.origin
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <div className="App">
       <h1>Bounty</h1>
