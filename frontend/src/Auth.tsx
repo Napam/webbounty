@@ -24,8 +24,8 @@ function App() {
             "Authorization": `Basic ${Base64Url.encode(code + ":" + harvestID)}`
           }
         }
-        const { data } = await axios.get("/api/oauth2client", config)
-        console.log("Succesfully authenticated, got from server:", data)
+        await axios.get("/api/oauth2client", config)
+        console.log("Succesfully authenticated")
       } catch (error) {
         console.error("Something went wrong when trying to authenticate: ", error)
         setStatus("pi-times")

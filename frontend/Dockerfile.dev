@@ -5,5 +5,5 @@ WORKDIR /app
 ARG user
 ARG uid
 ARG gid
-RUN userdel -r node && groupadd -g $gid $user && \ 
-    useradd --shell /bin/bash -u $uid -g $gid $user
+RUN userdel -r node && \
+    adduser --disabled-password --uid $uid --gecos "" $user

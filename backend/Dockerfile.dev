@@ -4,14 +4,9 @@ RUN go install github.com/cosmtrek/air@latest
 
 WORKDIR /app
 
-ENV HOME=/app
 ARG user
 ARG uid
 ARG gid
 
-RUN groupadd -g $gid $user && \ 
-    useradd --shell /bin/bash -u $uid -g $gid $user && \
-    usermod -a -G sudo $user && \
-    usermod -a -G root $user && \
-    passwd -d $user && \
+RUN adduser --disabled-password --uid $uid --gecos "" $user && \
     chown -R $user /go
