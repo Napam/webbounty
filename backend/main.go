@@ -37,11 +37,13 @@ func parseBasicAuthHeader(s string) (string, string, error) {
 func main() {
 	logger, _ := zap.NewDevelopment()
 	defer logger.Sync()
+	logger.Info("Initialize server")
 
 	CLIENT_ID := os.Getenv("CLIENT_ID")
 	CLIENT_SECRET := os.Getenv("CLIENT_SECRET")
 
 	router := gin.Default()
+	router.SetTrustedProxies([]string{"localhost", "host.docker.internal"})
 
 	router.GET("/", func(c *gin.Context) {
 		c.AbortWithStatus(404)

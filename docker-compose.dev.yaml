@@ -48,7 +48,7 @@ services:
       - "8080:80"
       - "8443:443"
     volumes:
-      - "./web/http.conf:/etc/nginx/conf.d/default.conf"
+      - "./web/dev/http.conf:/etc/nginx/conf.d/default.conf"
 
 networks:
   default:

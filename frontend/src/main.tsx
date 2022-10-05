@@ -21,7 +21,12 @@ const router = createBrowserRouter([
   },
   {
     path: "/auth",
-    element: <Auth/>
+    element: <Auth/>,
+    errorElement:
+      <div>
+        <div>:(</div>
+        <a href="/">Click here to go back</a>
+      </div>
   }
 ]);
 

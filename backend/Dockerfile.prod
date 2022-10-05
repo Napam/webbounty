@@ -1,0 +1,20 @@
+
+# Build
+FROM golang:1.19-bullseye AS build
+
+RUN go install github.com/cosmtrek/air@latest
+WORKDIR /app
+COPY . .
+RUN go build -ldflags "-s -w" -o /bounty2
+
+# Deploy
+FROM gcr.io/distroless/base-debian11
+
+WORKDIR /
+COPY --from=build /bounty2 /bounty2
+EXPOSE 8080
+ENV GIN_MODE=release
+USER nonroot:nonroot
+
+ENTRYPOINT ["/bounty2"]
+

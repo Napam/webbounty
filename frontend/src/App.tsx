@@ -9,7 +9,7 @@ function App() {
     <div className="App">
       <h1>Bounty</h1>
       <a 
-        href={harvestAuthUrl}>
+        href={harvestAuthUrl.toString()}>
           Click for OAuth2
       </a>
     </div>
