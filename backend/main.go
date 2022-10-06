@@ -49,7 +49,7 @@ func main() {
 		c.AbortWithStatus(404)
 	})
 
-	router.GET("health", func(c *gin.Context) {
+	router.GET("/health", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"status": "OK",
 		})
