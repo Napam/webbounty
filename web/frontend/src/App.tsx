@@ -10,7 +10,7 @@ function App() {
     <div className="App">
       <h1>Bounty</h1>
       <a href={harvestAuthUrl.toString()}>
-          <Button label="Click for OAuth2"></Button>
+          <Button label="Log in with Harvest"></Button>
       </a>
     </div>
   )
