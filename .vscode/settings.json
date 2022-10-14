@@ -16,6 +16,8 @@
             "other": true,
             "comments": false,
             "strings": true
-        }
-    }
+        },
+    },
+    "gitlens.codeLens.authors.enabled": false,
+    "gitlens.codeLens.recentChange.enabled": false
 }
