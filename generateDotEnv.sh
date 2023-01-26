@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+#
 # CLIENT_ID and CLIENT_SECRET should not be set here, but in the generated file
 cat <<EOF > .env
 USER=$(whoami)
