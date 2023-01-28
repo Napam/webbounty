@@ -4,7 +4,7 @@ version: '3.9'
 
 services:
   backend:
-    container_name: backend
+    container_name: webbounty_backend_dev
     build:
       context: ./backend
       dockerfile: Dockerfile.dev
@@ -26,7 +26,7 @@ services:
     command: air
 
   frontend:
-    container_name: frontend
+    container_name: webbounty_frontend_dev
     build:
       context: ./web/frontend
       dockerfile: Dockerfile.dev
@@ -42,7 +42,7 @@ services:
     command: sh -c "yarn && yarn dev --host 0.0.0.0 --port 8080"
 
   web:
-    container_name: web
+    container_name: webbounty_webserver_dev
     image: nginx:1.23-alpine
     ports:
       - "8080:80"
