@@ -17,9 +17,10 @@ services:
     volumes:
       - ./backend:/app
       - "/etc/ssl/certs:/etc/ssl/certs:ro"
+      - "$HOME/.mitmproxy/mitmproxy-ca-cert.pem:/etc/ssl/cert.pem" # Golang will use this path if the one over is not found (fallback for MacOS)
     environment:
-      - "http_proxy=host.docker.internal:8000"
-      - "https_proxy=host.docker.internal:8000"
+      - "http_proxy=host.docker.internal:9999"
+      - "https_proxy=host.docker.internal:9999"
       - "CLIENT_ID=${CLIENT_ID}"
       - "CLIENT_SECRET=${CLIENT_SECRET}"
     user: "${USER}"
