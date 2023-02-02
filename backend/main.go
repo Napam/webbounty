@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/base64"
 	"errors"
+	"fmt"
 	"net/http"
 	"net/url"
 	"os"
@@ -38,6 +39,7 @@ func main() {
 	logger, _ := zap.NewDevelopment()
 	defer logger.Sync()
 	logger.Info("Initialize server")
+	logger.Error("Initialize server")
 
 	CLIENT_ID := os.Getenv("CLIENT_ID")
 	CLIENT_SECRET := os.Getenv("CLIENT_SECRET")
@@ -77,9 +79,11 @@ func main() {
 			c.AbortWithStatus(401)
 			return
 		}
+
 		req.Header.Add("User-Agent", "Bounty")
 		resp, err := (*client).Do(req)
 
+		fmt.Println("LOG:\x1b[36mINFO\x1b[0m", err)
 		if err != nil || resp.StatusCode < 200 || resp.StatusCode > 299 {
 			logger.Error("Harvest could not approve authention request")
 			c.AbortWithStatus(401)
