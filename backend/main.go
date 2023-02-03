@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/base64"
 	"errors"
-	"fmt"
 	"net/http"
 	"net/url"
 	"os"
@@ -18,18 +17,18 @@ import (
  */
 func parseBasicAuthHeader(s string) (string, string, error) {
 	if !strings.HasPrefix(s, "Basic ") {
-		return "", "", errors.New("Auth header missing 'Basic' prefix")
+		return "", "", errors.New("auth header missing 'Basic' prefix")
 	}
 
 	authAsBytes, err := base64.URLEncoding.WithPadding(base64.NoPadding).DecodeString(strings.Split(s, "Basic ")[1])
 	if err != nil {
-		return "", "", errors.New("Could not decode auth header, got error: " + err.Error())
+		return "", "", errors.New("could not decode auth header, got error: " + err.Error())
 	}
 
 	authString := string(authAsBytes)
 	splitted := strings.Split(authString, ":")
 	if len(splitted) != 2 {
-		return "", "", errors.New("Invalid auth header")
+		return "", "", errors.New("invalid auth header")
 	}
 
 	return splitted[0], splitted[1], nil
@@ -83,7 +82,6 @@ func main() {
 		req.Header.Add("User-Agent", "Bounty")
 		resp, err := (*client).Do(req)
 
-		fmt.Println("LOG:\x1b[36mINFO\x1b[0m", err)
 		if err != nil || resp.StatusCode < 200 || resp.StatusCode > 299 {
 			logger.Error("Harvest could not approve authention request")
 			c.AbortWithStatus(401)
