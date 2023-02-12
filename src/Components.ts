@@ -18,4 +18,4 @@ export const Subtitle = styled.h2`
   font-size: 1.5em;
   margin-top: 0;
   margin-bottom: 0.5em;
-`
+` 
