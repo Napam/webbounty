@@ -14,27 +14,38 @@ import styled from 'styled-components/macro'
 
 const Container = styled.div`
   display: flex;
-  max-width: 900px;
+  height: 100%;
+  margin: 0 auto;
+  margin-top: 60px;
+  width: 1264px;
 `
 
 const Sidebar = styled.div`
-  width: 168px;
-  positon: sticky;
+  min-width: 168px;
+  max-width: 200px;
   height: 100%;
 `
 
 const Content = styled.div`
-  padding: 24px
+  padding: 24px;
+  max-width: 1200px;
+  border: 1px solid lightgray;
+  border-top: 0 none;
 `
 
 const HeaderToolbar = styled(Toolbar)`
   padding: 0 8px 0 8px;
   color: gray;
-  positon: sticky;
+  height: 100%;
 `
 
 const Header = styled.header`
   border-bottom: 1px solid lightgray;
+  position: fixed !important;
+  top: 0 !important;
+  width: 100%;
+  z-index: 1000;
+  height: 60px;
 `
 
 const SpacedContainer = styled.div`
@@ -42,17 +53,17 @@ const SpacedContainer = styled.div`
   justify-content: space-between; 
   align-items: center;
   gap: 14px;
+  font-size: 0.8em;
 `
 
 const StyledListBox = styled(ListBox)`
   border: 0 none;
-  border-right: 1px solid lightgray;
   border-radius: 0;
 `
 
 function getContent(view: string) {
   return {
-    Dashboard: "Dashboard content",
+    Dashboard: "Dashboard content ".repeat(1000),
     References: "References content",
     Settings: "Settings content",
   }[view]
@@ -88,7 +99,7 @@ function Dashboard() {
       <span>
         Logged in as {user?.displayName}
       </span>
-      <Button icon="pi pi-sign-out" className="p-button-primary" label='Sign out' onClick={() => signOut(auth)} />
+      <Button icon="pi pi-sign-out" className="p-button-primary p-button-sm" label='Sign out' onClick={() => signOut(auth)} />
     </SpacedContainer>
   );
 
