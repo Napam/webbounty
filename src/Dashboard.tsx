@@ -14,7 +14,7 @@ import styled from 'styled-components/macro'
 
 const Container = styled.div`
   display: flex;
-  height: 100%;
+  min-height: 100%;
   margin: 0 auto;
   margin-top: 60px;
   width: 1264px;
@@ -22,7 +22,6 @@ const Container = styled.div`
 
 const Sidebar = styled.div`
   min-width: 168px;
-  max-width: 200px;
   height: 100%;
   position: sticky;
   top: 60px;
@@ -31,14 +30,13 @@ const Sidebar = styled.div`
 const Content = styled.div`
   padding: 24px;
   width: 1200px;
-  height: 100%;
   border: 1px solid lightgray;
   border-top: 0 none;
   border-bottom: 0 none;
 `
 
 const HeaderToolbar = styled(Toolbar)`
-  padding: 0 8px 0 8px;
+  padding: 0;
   color: gray;
   height: 100%;
 `
@@ -49,7 +47,12 @@ const Header = styled.header`
   top: 0 !important;
   width: 100%;
   z-index: 1000;
-  height: 60px;
+  background: white;
+`
+
+const HeaderContainer = styled.div`
+  width: 1264px; 
+  margin: 0 auto;
 `
 
 const SpacedContainer = styled.div`
@@ -110,7 +113,9 @@ function Dashboard() {
   return (
     <>
       <Header>
-        <HeaderToolbar start={startContent} end={endContent} />
+        <HeaderContainer>
+          <HeaderToolbar start={startContent} end={endContent} />
+        </HeaderContainer>
       </Header>
       <Container>
         <Sidebar>

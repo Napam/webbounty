@@ -9,11 +9,15 @@
   -webkit-text-size-adjust: 100%;
 }
 
+#root {
+  height: 100%;
+}
+
 html {
   height: 100%;
 }
 
-:root > body {
+body {
   margin: 0;
   height: 100%;
 }

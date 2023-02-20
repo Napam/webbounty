@@ -12,7 +12,6 @@ const Sub = styled.h2`
   padding: 0;
   font-size: 0.7em;
   font-weight: 200;
-  margin-top: -4px;
 `
 
 const LogoContainer = styled.div`
