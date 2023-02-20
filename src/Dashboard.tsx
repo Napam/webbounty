@@ -47,7 +47,7 @@ const Header = styled.header`
   top: 0 !important;
   width: 100%;
   z-index: 1000;
-  background: white;
+  header: 60px;
 `
 
 const HeaderContainer = styled.div`
