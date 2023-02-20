@@ -24,13 +24,17 @@ const Sidebar = styled.div`
   min-width: 168px;
   max-width: 200px;
   height: 100%;
+  position: sticky;
+  top: 60px;
 `
 
 const Content = styled.div`
   padding: 24px;
-  max-width: 1200px;
+  width: 1200px;
+  height: 100%;
   border: 1px solid lightgray;
   border-top: 0 none;
+  border-bottom: 0 none;
 `
 
 const HeaderToolbar = styled(Toolbar)`
@@ -104,7 +108,7 @@ function Dashboard() {
   );
 
   return (
-    <div>
+    <>
       <Header>
         <HeaderToolbar start={startContent} end={endContent} />
       </Header>
@@ -122,7 +126,7 @@ function Dashboard() {
           {getContent(selectedView)}
         </Content>
       </Container>
-    </div>
+    </>
   )
 }
 
