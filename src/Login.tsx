@@ -23,6 +23,7 @@ function Login() {
   const navigateToDashboard = () => navigate('/dashboard')
 
   useEffect(() => {
+    console.log(user)
     if (user) (
       navigate("/dashboard")
     )

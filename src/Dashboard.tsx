@@ -79,16 +79,15 @@ function getContent(view: string) {
 }
 
 function Dashboard() {
-  const [user] = useAuthState(auth)
+  const [user, authLoading] = useAuthState(auth)
   const navigate = useNavigate()
 
   const [selectedView, setSelectedView] = useState('Dashboard')
 
 
   useEffect(() => {
-    if (!user) {
-      return navigate("/")
-    }
+    if (authLoading) return;
+    if (!user) return navigate("/")
   }, [user])
 
   const options = [
