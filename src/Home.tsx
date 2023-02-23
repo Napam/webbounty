@@ -78,7 +78,7 @@ function getContent(view: string) {
   }[view]
 }
 
-function Dashboard() {
+function Home() {
   const [user, authLoading] = useAuthState(auth)
   const navigate = useNavigate()
 
@@ -136,5 +136,5 @@ function Dashboard() {
   )
 }
 
-export default Dashboard
+export default Home
 

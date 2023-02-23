@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App'
 import Login from './Login'
-import Dashboard from './Dashboard'
+import Home from './Home'
 
 import "primereact/resources/themes/md-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css";
@@ -16,7 +16,7 @@ import {
 
 const router = createBrowserRouter([
   { path: "/", element: <Login /> },
-  { path: "/dashboard", element: <Dashboard /> }
+  { path: "/home", element: <Home /> }
 ])
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(

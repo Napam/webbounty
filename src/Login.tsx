@@ -20,12 +20,11 @@ async function signIn() {
 function Login() {
   const [user] = useAuthState(auth)
   const navigate = useNavigate()
-  const navigateToDashboard = () => navigate('/dashboard')
 
   useEffect(() => {
     console.log(user)
     if (user) (
-      navigate("/dashboard")
+      navigate("/home")
     )
   }, [user])
 
