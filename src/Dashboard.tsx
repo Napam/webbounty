@@ -17,7 +17,7 @@ const Container = styled.div`
   min-height: 100%;
   margin: 0 auto;
   margin-top: 60px;
-  width: 1264px;
+  max-width: 1264px;
 `
 
 const Sidebar = styled.div`
@@ -29,16 +29,17 @@ const Sidebar = styled.div`
 
 const Content = styled.div`
   padding: 24px;
-  width: 1200px;
   border: 1px solid lightgray;
   border-top: 0 none;
   border-bottom: 0 none;
+  width: 100%;
 `
 
 const HeaderToolbar = styled(Toolbar)`
   padding: 0;
   color: gray;
   height: 100%;
+  flex-wrap: false;
 `
 
 const Header = styled.header`
@@ -51,8 +52,9 @@ const Header = styled.header`
 `
 
 const HeaderContainer = styled.div`
-  width: 1264px; 
+  max-width: 1264px; 
   margin: 0 auto;
+  padding: 0 8px;
 `
 
 const SpacedContainer = styled.div`
