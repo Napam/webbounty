@@ -7,6 +7,7 @@ import { useEffect } from 'react';
 import { ListBox } from 'primereact/listbox';
 import { Toolbar } from 'primereact/toolbar';
 import Logo from './Logo'
+import Settings from './Settings'
 import { useState } from 'react'
 
 import styled from 'styled-components/macro'
@@ -70,13 +71,19 @@ const StyledListBox = styled(ListBox)`
   border-radius: 0;
 `
 
-function getContent(view: string) {
-  return {
-    Dashboard: "Dashboard content ".repeat(1000),
-    References: "References content",
-    Settings: "Settings content",
-  }[view]
-}
+const LogoContainer = styled(Button)`
+  color: var(--primary-color);
+  background: transparent;
+  &:enabled:focus {
+    background: inherit;
+  }
+
+  &:enabled:hover {
+    background: inherit;
+    color: var(--primary-color);
+  }
+`
+
 
 function Home() {
   const [user, authLoading] = useAuthState(auth)
@@ -96,13 +103,13 @@ function Home() {
     { name: "Settings" }
   ]
 
-  const startContent = (
-    <Button className="p-button-text">
+  const headerStartContent = (
+    <LogoContainer>
       <Logo />
-    </Button>
+    </LogoContainer>
   );
 
-  const endContent = (
+  const headerEndContent = (
     <SpacedContainer>
       <span>
         Logged in as {user?.displayName}
@@ -111,17 +118,27 @@ function Home() {
     </SpacedContainer>
   );
 
+  function getContent(view: string) {
+    const contentMap = {
+      Dashboard: () => "Dashboard content ".repeat(1000),
+      References: () => "References content",
+      Settings: Settings
+    }
+
+    return contentMap[view as keyof typeof contentMap]()
+  }
+
   return (
     <>
       <Header>
         <HeaderContainer>
-          <HeaderToolbar start={startContent} end={endContent} />
+          <HeaderToolbar start={headerStartContent} end={headerEndContent} />
         </HeaderContainer>
       </Header>
       <Container>
         <Sidebar>
           <StyledListBox
-            onChange={e => setSelectedView(e.value)}
+            onChange={e => e.value && setSelectedView(e.value)}
             value={selectedView}
             options={options}
             optionLabel='name'
