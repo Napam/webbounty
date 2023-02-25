@@ -4,12 +4,64 @@ import { useAuthState } from 'react-firebase-hooks/auth'
 import { Button } from 'primereact/button'
 import { useNavigate, Outlet, useLocation } from 'react-router-dom'
 import { useEffect } from 'react';
-import { ListBox, ListBoxChangeEvent } from 'primereact/listbox';
+import { ListBox } from 'primereact/listbox';
 import { Toolbar } from 'primereact/toolbar';
 import Logo from './Logo'
-import { useState } from 'react'
-
 import styled from 'styled-components/macro'
+
+function Home({ paths }: { paths: string[] }) {
+  const [user, authLoading] = useAuthState(auth)
+  const navigate = useNavigate()
+  const { pathname } = useLocation()
+
+  let selectedView = pathname.split("/").at(-1)
+  const options = paths.map(path => ({ label: path }))
+
+  useEffect(() => {
+    if (authLoading) return;
+    if (!user) return navigate("/")
+  }, [user])
+
+  const headerStartContent = (
+    <LogoContainerButton onClick={() => navigate("/home")}>
+      <Logo />
+    </LogoContainerButton>
+  );
+
+  const headerEndContent = (
+    <SpacedContainer>
+      <span>
+        Logged in as {user?.displayName}
+      </span>
+      <Button icon="pi pi-sign-out" className="p-button-primary p-button-sm" label='Sign out' onClick={() => signOut(auth)} />
+    </SpacedContainer>
+  );
+
+  return (
+    <>
+      <Header>
+        <HeaderContainer>
+          <HeaderToolbar start={headerStartContent} end={headerEndContent} />
+        </HeaderContainer>
+      </Header>
+      <Container>
+        <Sidebar>
+          <SidebarListBox
+            onChange={e => navigate(e.value)}
+            value={selectedView}
+            options={options}
+            optionValue='label'
+          />
+        </Sidebar>
+        <Content>
+          <Outlet />
+        </Content>
+      </Container>
+    </>
+  )
+}
+
+export default Home
 
 
 const Container = styled.div`
@@ -86,59 +138,3 @@ const LogoContainerButton = styled(Button)`
     color: var(--primary-color);
   }
 `
-
-
-function Home({ paths }: { paths: string[] }) {
-  const [user, authLoading] = useAuthState(auth)
-  const navigate = useNavigate()
-  const { pathname } = useLocation()
-
-  let selectedView = pathname.split("/").at(-1)
-  const options = paths.map(path => ({label: path}))
-
-  useEffect(() => {
-    if (authLoading) return;
-    if (!user) return navigate("/")
-  }, [user])
-
-  const headerStartContent = (
-    <LogoContainerButton onClick={() => navigate("/home")}>
-      <Logo />
-    </LogoContainerButton>
-  );
-
-  const headerEndContent = (
-    <SpacedContainer>
-      <span>
-        Logged in as {user?.displayName}
-      </span>
-      <Button icon="pi pi-sign-out" className="p-button-primary p-button-sm" label='Sign out' onClick={() => signOut(auth)} />
-    </SpacedContainer>
-  );
-
-  return (
-    <>
-      <Header>
-        <HeaderContainer>
-          <HeaderToolbar start={headerStartContent} end={headerEndContent} />
-        </HeaderContainer>
-      </Header>
-      <Container>
-        <Sidebar>
-          <SidebarListBox
-            onChange={e => navigate(e.value)}
-            value={selectedView}
-            options={options}
-            optionValue='label'
-          />
-        </Sidebar>
-        <Content>
-          <Outlet />
-        </Content>
-      </Container>
-    </>
-  )
-}
-
-export default Home
-
