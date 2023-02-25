@@ -66,12 +66,15 @@ const SpacedContainer = styled.div`
   font-size: 0.8em;
 `
 
-const StyledListBox = styled(ListBox)`
+const SidebarListBox = styled(ListBox)`
   border: 0 none;
   border-radius: 0;
+  li {
+    text-transform: capitalize;
+  }
 `
 
-const LogoContainer = styled(Button)`
+const LogoContainerButton = styled(Button)`
   color: var(--primary-color);
   background: transparent;
   &:enabled:focus {
@@ -85,28 +88,23 @@ const LogoContainer = styled(Button)`
 `
 
 
-function Home() {
-  const { pathname } = useLocation()
+function Home({ paths }: { paths: string[] }) {
   const [user, authLoading] = useAuthState(auth)
   const navigate = useNavigate()
+  const { pathname } = useLocation()
 
-  const [selectedView, setSelectedView] = useState(pathname.split("/").at(-1))
+  let selectedView = pathname.split("/").at(-1)
+  const options = paths.map(path => ({label: path}))
 
   useEffect(() => {
     if (authLoading) return;
     if (!user) return navigate("/")
   }, [user])
 
-  const options = [
-    {label:"Dashboard", value: "dashboard" },
-    {label:"References", value: "references" },
-    {label:"Settings", value: "settings" }
-  ]
-
   const headerStartContent = (
-    <LogoContainer>
+    <LogoContainerButton onClick={() => navigate("/home")}>
       <Logo />
-    </LogoContainer>
+    </LogoContainerButton>
   );
 
   const headerEndContent = (
@@ -117,11 +115,6 @@ function Home() {
       <Button icon="pi pi-sign-out" className="p-button-primary p-button-sm" label='Sign out' onClick={() => signOut(auth)} />
     </SpacedContainer>
   );
-  
-  function onSidebarEvent(event: ListBoxChangeEvent) {
-    setSelectedView(event.value)
-    navigate(event.value)
-  }
 
   return (
     <>
@@ -132,16 +125,15 @@ function Home() {
       </Header>
       <Container>
         <Sidebar>
-          <StyledListBox
-            onChange={onSidebarEvent}
+          <SidebarListBox
+            onChange={e => navigate(e.value)}
             value={selectedView}
             options={options}
-            optionLabel='label'
-            optionValue='value'
+            optionValue='label'
           />
         </Sidebar>
         <Content>
-          <Outlet/>
+          <Outlet />
         </Content>
       </Container>
     </>

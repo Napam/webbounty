@@ -12,19 +12,24 @@ import "./index.css";
 
 import {
   createBrowserRouter,
-  RouterProvider
+  RouterProvider,
+  Navigate
 } from "react-router-dom"
+
+const homeOutlets = [
+      { path: "dashboard", element: "Dashboard content! ".repeat(100) },
+      { path: "references", element: "References content! ".repeat(10) },
+      { path: "settings", element: <Settings /> }
+]
 
 const router = createBrowserRouter([
   { path: "/", element: <Login /> },
   {
     path: "/home",
-    element: <Home />,
+    element: <Home paths={homeOutlets.map(x => x.path)}/>,
     children: [
-      { index: true, element: "Dashboard content! ".repeat(100) },
-      { path: "dashboard", element: "Dashboard content! ".repeat(100) },
-      { path: "references", element: "References content!".repeat(10) },
-      { path: "settings", element: <Settings /> }
+      { index: true, element: <Navigate to="dashboard" /> },
+      ...homeOutlets
     ]
   }
 ])
