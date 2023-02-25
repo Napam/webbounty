@@ -3,29 +3,20 @@ import styled from 'styled-components/macro'
 const Main = styled.h1`
   margin: 0;
   padding: 0;
-  font-size: 1.4em;
-  font-weight: 400;
+  font-size: 24px;
+  font-weight: 700;
 `
-
-const Sub = styled.h2`
-  margin: 0;
-  padding: 0;
-  font-size: 0.7em;
-  font-weight: 200;
-  margin-top: -2px;
-`
-
 const LogoContainer = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
+  font-family: Comfortaa;
 `
 
 function Logo() {
   return (
     <LogoContainer>
-      <Main>BOUNTY</Main>
-      <Sub>TRÉSOR</Sub>
+      <Main>bounty</Main>
     </LogoContainer>
   )
 }

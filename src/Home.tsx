@@ -63,12 +63,11 @@ function Home({ paths }: { paths: string[] }) {
 
 export default Home
 
-
 const Container = styled.div`
   display: flex;
   min-height: 100%;
   margin: 0 auto;
-  margin-top: 60px;
+  margin-top: 52px;
   max-width: 1264px;
 `
 
@@ -76,7 +75,7 @@ const Sidebar = styled.div`
   min-width: 168px;
   height: 100%;
   position: sticky;
-  top: 60px;
+  top: 52px;
 `
 
 const Content = styled.div`
@@ -100,7 +99,7 @@ const Header = styled.header`
   top: 0 !important;
   width: 100%;
   z-index: 1000;
-  header: 60px;
+  height: 52px;
   background: white;
 `
 
