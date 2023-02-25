@@ -2,12 +2,11 @@ import { auth } from './Firebase'
 import { signOut } from "firebase/auth";
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { Button } from 'primereact/button'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Outlet, useLocation } from 'react-router-dom'
 import { useEffect } from 'react';
-import { ListBox } from 'primereact/listbox';
+import { ListBox, ListBoxChangeEvent } from 'primereact/listbox';
 import { Toolbar } from 'primereact/toolbar';
 import Logo from './Logo'
-import Settings from './Settings'
 import { useState } from 'react'
 
 import styled from 'styled-components/macro'
@@ -87,11 +86,11 @@ const LogoContainer = styled(Button)`
 
 
 function Home() {
+  const { pathname } = useLocation()
   const [user, authLoading] = useAuthState(auth)
   const navigate = useNavigate()
 
-  const [selectedView, setSelectedView] = useState('Dashboard')
-
+  const [selectedView, setSelectedView] = useState(pathname.split("/").at(-1))
 
   useEffect(() => {
     if (authLoading) return;
@@ -99,9 +98,9 @@ function Home() {
   }, [user])
 
   const options = [
-    { name: "Dashboard" },
-    { name: "References" },
-    { name: "Settings" }
+    {label:"Dashboard", value: "dashboard" },
+    {label:"References", value: "references" },
+    {label:"Settings", value: "settings" }
   ]
 
   const headerStartContent = (
@@ -118,15 +117,10 @@ function Home() {
       <Button icon="pi pi-sign-out" className="p-button-primary p-button-sm" label='Sign out' onClick={() => signOut(auth)} />
     </SpacedContainer>
   );
-
-  function getContent(view: string) {
-    const contentMap = {
-      Dashboard: () => "Dashboard content ".repeat(1000),
-      References: () => "References content",
-      Settings: Settings
-    }
-
-    return contentMap[view as keyof typeof contentMap]()
+  
+  function onSidebarEvent(event: ListBoxChangeEvent) {
+    setSelectedView(event.value)
+    navigate(event.value)
   }
 
   return (
@@ -139,15 +133,15 @@ function Home() {
       <Container>
         <Sidebar>
           <StyledListBox
-            onChange={e => e.value && setSelectedView(e.value)}
+            onChange={onSidebarEvent}
             value={selectedView}
             options={options}
-            optionLabel='name'
-            optionValue='name'
+            optionLabel='label'
+            optionValue='value'
           />
         </Sidebar>
         <Content>
-          {getContent(selectedView)}
+          <Outlet/>
         </Content>
       </Container>
     </>

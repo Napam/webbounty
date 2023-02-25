@@ -1,4 +1,6 @@
-function Settings () {
+
+function Settings() {
+
   return (
     <>
       Test !!!
