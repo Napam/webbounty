@@ -1,5 +1,9 @@
 import { Accordion, AccordionTab } from 'primereact/accordion';
+import { Calendar } from 'primereact/calendar';
+import { InputNumber } from 'primereact/inputnumber';
+import { InputTextarea } from 'primereact/inputtextarea';
 import styled from 'styled-components/macro'
+import React, { useState } from 'react'
 
 export default function References() {
   let options: Intl.DateTimeFormatOptions = {
@@ -21,35 +25,51 @@ export default function References() {
       <span>
         <i className="pi pi-wallet"></i>
         <span className="reference-balance">
-          {new Intl.NumberFormat('en', {maximumFractionDigits: 2, style: "decimal", notation: "standard"}).format((Math.random() * 35))}
+          {new Intl.NumberFormat('en', { maximumFractionDigits: 2, style: "decimal", notation: "standard" }).format((Math.random() * 35))}
         </span>
       </span>
     </HeaderContainer>
   )
 
+  const [value, setValue] = useState(0);
+
   const Content = () => (
-    <>
-      Test
-    </>
+    <ReferenceFormContainer>
+      <label>Reference date</label>
+      <div className="p-inputgroup">
+        <Calendar />
+        <span className="p-inputgroup-addon">
+          <i className="pi pi-calendar"></i>
+        </span>
+      </div>
+      <label>Reference balance</label>
+      <div className="p-inputgroup">
+        <InputNumber value={value} onValueChange={e => setValue(e.value)} />
+        <span className="p-inputgroup-addon">
+          <i className="pi pi-wallet"></i>
+        </span>
+      </div>
+      <label>Notes</label>
+      <div className="p-inputgroup">
+        <InputTextarea />
+        <span className="p-inputgroup-addon">
+          <i className="pi pi-info-circle"></i>
+        </span>
+      </div>
+    </ReferenceFormContainer>
   )
 
   return (
     <>
-      <ReferencesAccordion multiple activeIndex={[0]}>
+      <ReferencesAccordion multiple>
         <AccordionTab header={header()}>
-          <Content/>
+          <Content />
         </AccordionTab>
         <AccordionTab header={header()}>
-          Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa
-          quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas
-          sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.
-          Consectetur, adipisci velit, sed quia non numquam eius modi.
+          <Content />
         </AccordionTab>
         <AccordionTab header={header()}>
-          At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti
-          quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt
-          mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio.
-          Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus.
+          <Content />
         </AccordionTab>
       </ReferencesAccordion>
     </>
@@ -63,6 +83,34 @@ const ReferencesAccordion = styled(Accordion)`
 
   .p-accordion-header-text {
     width: 100%;
+  }
+`
+
+const ReferenceFormContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  max-width: 20em;
+  label {
+    display: block;
+    font-size: 0.90em;
+    margin-bottom: 4px;
+  }
+
+  input, textarea {
+    padding: 6px 6px;
+    font-size: 0.90em;
+  }
+
+  textarea {
+    height: 6em;
+  }
+
+  & > div {
+    margin-bottom: 24px;
+  }
+
+  .p-inputgroup-addon {
+    padding: 0;
   }
 `
 
