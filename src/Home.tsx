@@ -33,7 +33,7 @@ function Home({ paths }: { paths: string[] }) {
       <span>
         Logged in as {user?.displayName}
       </span>
-      <Button icon="pi pi-sign-out" className="p-button-primary p-button-sm" label='Sign out' onClick={() => signOut(auth)} />
+      <StyledButton icon="pi pi-sign-out" className="p-button-primary p-button-sm" label='Sign out' onClick={() => signOut(auth)} />
     </SpacedContainer>
   );
 
@@ -62,6 +62,18 @@ function Home({ paths }: { paths: string[] }) {
 }
 
 export default Home
+
+
+const StyledButton = styled(Button)`
+  background: transparent;
+
+  &:enabled:hover {
+    background: inherit;
+    color: var(--primary-color)
+  }
+
+  color: var(--primary-color)
+`
 
 const Container = styled.div`
   display: flex;
