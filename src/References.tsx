@@ -2,6 +2,7 @@ import { Accordion, AccordionTab } from 'primereact/accordion';
 import { Calendar } from 'primereact/calendar';
 import { InputNumber } from 'primereact/inputnumber';
 import { InputTextarea } from 'primereact/inputtextarea';
+import { Button } from 'primereact/button';
 import styled from 'styled-components/macro'
 import React, { useState } from 'react'
 
@@ -13,68 +14,79 @@ export default function References() {
     day: "numeric",
   };
 
-  const header = () => (
+  const getDate = () => Intl.DateTimeFormat('en', options).format(new Date(Date.UTC(Math.round(Math.random() * 25) + 2000, Math.round(Math.random() * 11), 10)))
+  const getBalance = () => new Intl.NumberFormat('en', { maximumFractionDigits: 2, style: "decimal", notation: "standard" }).format((Math.random() * 35))
+
+  const createHeader = (date: string, balance: string) => (
     <HeaderContainer>
       <span className="reference-date">
         <i className="pi pi-calendar"></i>
         <span>
-          {Intl.DateTimeFormat('en', options).format(new Date(Date.UTC(Math.round(Math.random() * 25) + 2000, Math.round(Math.random() * 11), 10)))}
+          {date}
         </span>
       </span>
-
       <span>
         <i className="pi pi-wallet"></i>
         <span className="reference-balance">
-          {new Intl.NumberFormat('en', { maximumFractionDigits: 2, style: "decimal", notation: "standard" }).format((Math.random() * 35))}
+          {balance}
         </span>
       </span>
     </HeaderContainer>
   )
 
-  const [value, setValue] = useState(0);
+  const [accordionsData, setAccordions] = useState([...Array(4).keys()].map(() => ({ date: getDate(), balance: getBalance() })))
 
-  const Content = () => (
-    <ReferenceFormContainer>
-      <label>Reference date</label>
-      <div className="p-inputgroup">
-        <Calendar />
-        <span className="p-inputgroup-addon">
-          <i className="pi pi-calendar"></i>
-        </span>
-      </div>
-      <label>Reference balance</label>
-      <div className="p-inputgroup">
-        <InputNumber value={value} onValueChange={e => setValue(e.value)} />
-        <span className="p-inputgroup-addon">
-          <i className="pi pi-wallet"></i>
-        </span>
-      </div>
-      <label>Notes</label>
-      <div className="p-inputgroup">
-        <InputTextarea />
-        <span className="p-inputgroup-addon">
-          <i className="pi pi-info-circle"></i>
-        </span>
-      </div>
-    </ReferenceFormContainer>
-  )
+  const accordions = () => {
+    return accordionsData.map((data, i) =>
+      <AccordionTab key={i} header={createHeader(data.date, data.balance)}>
+        <ReferenceFormContainer>
+          <label>Reference date</label>
+          <div className="p-inputgroup">
+            <Calendar />
+            <span className="p-inputgroup-addon">
+              <i className="pi pi-calendar"></i>
+            </span>
+          </div>
+          <label>Reference balance</label>
+          <div className="p-inputgroup">
+            <InputNumber />
+            <span className="p-inputgroup-addon">
+              <i className="pi pi-wallet"></i>
+            </span>
+          </div>
+          <label>Notes</label>
+          <div className="p-inputgroup">
+            <InputTextarea />
+            <span className="p-inputgroup-addon">
+              <i className="pi pi-info-circle"></i>
+            </span>
+          </div>
+          <Button
+            outlined
+            label="Delete"
+            severity="danger"
+            size="small"
+            onClick={() => { setAccordions(accordionsData.filter((_, x) => x !== i)) }}
+          />
+        </ReferenceFormContainer>
+      </AccordionTab>)
+  }
 
   return (
     <>
-      <ReferencesAccordion multiple>
-        <AccordionTab header={header()}>
-          <Content />
-        </AccordionTab>
-        <AccordionTab header={header()}>
-          <Content />
-        </AccordionTab>
-        <AccordionTab header={header()}>
-          <Content />
-        </AccordionTab>
+      <TopButtonContainer>
+        <Button label="Add new reference" size="small" />
+      </TopButtonContainer>
+      <ReferencesAccordion multiple >
+        {accordions()}
       </ReferencesAccordion>
     </>
   )
 }
+
+const TopButtonContainer = styled.div`
+  margin-bottom: 20px;
+`
 
 const ReferencesAccordion = styled(Accordion)`
   .p-accordion-tab {
@@ -111,6 +123,10 @@ const ReferenceFormContainer = styled.div`
 
   .p-inputgroup-addon {
     padding: 0;
+  }
+
+  > button {
+    width: fit-content;
   }
 `
 

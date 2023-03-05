@@ -26,16 +26,16 @@ function Home({ paths }: { paths: string[] }) {
     <LogoContainerButton onClick={() => navigate("/home")}>
       <Logo />
     </LogoContainerButton>
-  );
+  )
 
   const headerEndContent = (
     <SpacedContainer>
       <span>
         Logged in as {user?.displayName}
       </span>
-      <StyledButton icon="pi pi-sign-out" className="p-button-primary p-button-sm" label='Sign out' onClick={() => signOut(auth)} />
+      <StyledButton icon="pi pi-sign-out" className="p-button-primary p-button-sm" link label='Sign out' onClick={() => signOut(auth)} />
     </SpacedContainer>
-  );
+  )
 
   return (
     <>
