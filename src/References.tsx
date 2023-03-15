@@ -7,34 +7,60 @@ import styled from 'styled-components/macro'
 import React, { useState } from 'react'
 
 export default function References() {
-  let options: Intl.DateTimeFormatOptions = {
+
+  const dateFormatOptions: Intl.DateTimeFormatOptions = {
     weekday: "long",
     year: "numeric",
     month: "long",
     day: "numeric",
-  };
+  }
 
-  const getDate = () => Intl.DateTimeFormat('en', options).format(new Date(Date.UTC(Math.round(Math.random() * 25) + 2000, Math.round(Math.random() * 11), 10)))
-  const getBalance = () => new Intl.NumberFormat('en', { maximumFractionDigits: 2, style: "decimal", notation: "standard" }).format((Math.random() * 35))
+  const numberFormatOptions: Intl.NumberFormatOptions = {
+    maximumFractionDigits: 2
+  }
 
-  const createHeader = (date: string, balance: string) => (
+  const getDate = () => new Date(Date.UTC(Math.round(Math.random() * 25) + 1990, Math.round(Math.random() * 11), 10))
+  const getBalance = () => Math.random() * 35
+
+  const createHeader = (date: Date, balance: number) => (
     <HeaderContainer>
       <span className="reference-date">
         <i className="pi pi-calendar"></i>
         <span>
-          {date}
+          {Intl.DateTimeFormat('en', dateFormatOptions).format(date)}
         </span>
       </span>
       <span>
         <i className="pi pi-wallet"></i>
         <span className="reference-balance">
-          {balance}
+          {Intl.NumberFormat('en', numberFormatOptions).format(balance)}
         </span>
       </span>
     </HeaderContainer>
   )
 
-  const [accordionsData, setAccordions] = useState([...Array(4).keys()].map(() => ({ date: getDate(), balance: getBalance() })))
+  const [accordionsData, setAccordions] = useState([...Array(4).keys()].map(() => ({ date: getDate(), balance: getBalance() })).sort((a, b) => b.date.getTime() - a.date.getTime()))
+
+  const addReference = () => {
+    const newAccordion = { date: new Date(), balance: 0 }
+    const array = [...accordionsData, newAccordion].sort((a, b) => b.date.getTime() - a.date.getTime())
+    setAccordions(array)
+  }
+
+  const updateDate = (value: Nullable<string | Date>, i: number) => {
+    console.log(value)
+    if (!value) return
+
+    const temp = [...accordionsData]
+    temp[i].date = new Date(value)
+    setAccordions(temp)
+  }
+
+  const updateBalance = (value: string, i: number) => {
+    const temp = [...accordionsData]
+    temp[i].balance = parseFloat(value)
+    setAccordions(temp)
+  }
 
   const accordions = () => {
     return accordionsData.map((data, i) =>
@@ -42,14 +68,15 @@ export default function References() {
         <ReferenceFormContainer>
           <label>Reference date</label>
           <div className="p-inputgroup">
-            <Calendar />
+            <Calendar value={data.date} onSelect={e => updateDate(e.value, i)} />
+
             <span className="p-inputgroup-addon">
               <i className="pi pi-calendar"></i>
             </span>
           </div>
           <label>Reference balance</label>
           <div className="p-inputgroup">
-            <InputNumber />
+            <InputNumber value={data.balance} onBlur={e => updateBalance(e.target.value, i)} />
             <span className="p-inputgroup-addon">
               <i className="pi pi-wallet"></i>
             </span>
@@ -75,7 +102,7 @@ export default function References() {
   return (
     <>
       <TopButtonContainer>
-        <Button label="Add new reference" size="small" />
+        <Button label="Add new reference" size="small" onClick={addReference} />
       </TopButtonContainer>
       <ReferencesAccordion multiple >
         {accordions()}
