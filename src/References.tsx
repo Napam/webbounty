@@ -5,6 +5,7 @@ import { InputTextarea } from 'primereact/inputtextarea';
 import { Button } from 'primereact/button';
 import styled from 'styled-components/macro'
 import React, { useState } from 'react'
+import { Nullable } from 'primereact/ts-helpers';
 
 export default function References() {
 
@@ -47,12 +48,12 @@ export default function References() {
     setAccordions(array)
   }
 
-  const updateDate = (value: Nullable<string | Date>, i: number) => {
+  const updateDate = (value: Nullable<string | Date | Date[]> , i: number) => {
     console.log(value)
     if (!value) return
 
     const temp = [...accordionsData]
-    temp[i].date = new Date(value)
+    temp[i].date = new Date(value as string)
     setAccordions(temp)
   }
 
