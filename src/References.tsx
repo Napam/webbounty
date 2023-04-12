@@ -1,11 +1,11 @@
-import { Accordion, AccordionTab } from 'primereact/accordion';
-import { Calendar } from 'primereact/calendar';
-import { InputNumber } from 'primereact/inputnumber';
-import { InputTextarea } from 'primereact/inputtextarea';
-import { Button } from 'primereact/button';
+import { Accordion, AccordionTab } from 'primereact/accordion'
+import { Calendar } from 'primereact/calendar'
+import { InputNumber } from 'primereact/inputnumber'
+import { InputTextarea } from 'primereact/inputtextarea'
+import { Button } from 'primereact/button'
 import styled from 'styled-components/macro'
 import React, { useState } from 'react'
-import { Nullable } from 'primereact/ts-helpers';
+import { Nullable } from 'primereact/ts-helpers'
 
 export default function References() {
 
@@ -40,16 +40,15 @@ export default function References() {
     </HeaderContainer>
   )
 
-  const [accordionsData, setAccordions] = useState([...Array(4).keys()].map(() => ({ date: getDate(), balance: getBalance() })).sort((a, b) => b.date.getTime() - a.date.getTime()))
+  const [accordionsData, setAccordions] = useState([...Array(4).keys()].map(() => ({ date: getDate(), balance: getBalance(), note: "" })).sort((a, b) => b.date.getTime() - a.date.getTime()))
 
   const addReference = () => {
-    const newAccordion = { date: new Date(), balance: 0 }
+    const newAccordion = { date: new Date(), balance: 0, note: "" }
     const array = [...accordionsData, newAccordion].sort((a, b) => b.date.getTime() - a.date.getTime())
     setAccordions(array)
   }
 
   const updateDate = (value: Nullable<string | Date | Date[]> , i: number) => {
-    console.log(value)
     if (!value) return
 
     const temp = [...accordionsData]
@@ -57,9 +56,16 @@ export default function References() {
     setAccordions(temp)
   }
 
-  const updateBalance = (value: string, i: number) => {
+  const updateBalance = (value: number, i: number) => {
     const temp = [...accordionsData]
-    temp[i].balance = parseFloat(value)
+    temp[i].balance = value
+    setAccordions(temp)
+  }
+
+  const updateNote = (value: string, i: number) => {
+    // TODO: Needs debouncing!
+    const temp = [...accordionsData]
+    temp[i].note = value
     setAccordions(temp)
   }
 
@@ -70,21 +76,20 @@ export default function References() {
           <label>Reference date</label>
           <div className="p-inputgroup">
             <Calendar value={data.date} onSelect={e => updateDate(e.value, i)} />
-
             <span className="p-inputgroup-addon">
               <i className="pi pi-calendar"></i>
             </span>
           </div>
           <label>Reference balance</label>
           <div className="p-inputgroup">
-            <InputNumber value={data.balance} onBlur={e => updateBalance(e.target.value, i)} />
+            <InputNumber value={data.balance} maxFractionDigits={2} maxLength={12} onValueChange={e => updateBalance(Number(e.value), i)} />
             <span className="p-inputgroup-addon">
               <i className="pi pi-wallet"></i>
             </span>
           </div>
           <label>Notes</label>
           <div className="p-inputgroup">
-            <InputTextarea />
+            <InputTextarea value={data.note} onChange={e => updateNote(e.target.value, i)} />
             <span className="p-inputgroup-addon">
               <i className="pi pi-info-circle"></i>
             </span>
@@ -99,6 +104,7 @@ export default function References() {
         </ReferenceFormContainer>
       </AccordionTab>)
   }
+
 
   return (
     <>
